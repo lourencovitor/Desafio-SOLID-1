@@ -1,0 +1,328 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Introdução ao SOLID",
+    "description": "API Rest desenvolvida para exercitar as regras SOLID",
+    "version": "1.0.0",
+    "contact":{
+      "email": "vitor.brother17@gmail.com"
+    }
+  },
+  "paths":{
+    "/users":{
+      "post":{
+        "tags":["User"],
+        "summary":"Criação de Usuário",
+        "description":"Create a new User",
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "name":{
+                    "type":"string"
+                  },
+                  "email":{
+                    "type":"string"
+                  }
+                },
+                "example":{
+                  "name":"User name sample",
+                  "email":"User email sample"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201":{
+            "description":"Created",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "id":{
+                      "type":"string",
+                      "example":"62e23a2e-5ef3-4772-b2ba-08828efe8c09"
+                    },
+                    "admin":{
+                      "type":"boolean",
+                      "example":"false"
+                    },
+                    "name":{
+                      "type": "string",
+                      "example": "User name sample"
+                    },
+                    "created_at":{
+                      "type": "string",
+                      "example":"2022-04-22T15:51:38.522Z"
+                    },
+                    "updated_at":{
+                      "type": "string",
+                      "example":"2022-04-22T15:51:38.522Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description":"Email já está sendo utilizado.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "error":{
+                      "type":"string",
+                      "example":"This email is already use."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get":{
+        "tags":["User"],
+        "summary":"Listar todos os usuários somente quando for admin",
+        "description": "List all users",
+        "parameters":[{
+          "in":"header",
+          "name":"user_id",
+          "schema":{
+            "type":"string",
+            "format":"uuid"
+          },
+          "required":true
+        }],
+        "responses":{
+          "200":{
+            "description":"Operação realizada com sucesso",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "array",
+                  "items":{
+                    "type":"object",
+                    "properties":{
+                      "admin":{
+                        "type":"boolean"
+                      },
+                      "id":{
+                        "type":"string"
+                      },
+                      "name":{
+                        "type":"string"
+                      },
+                      "email":{
+                        "type":"string"
+                      },
+                      "created_at":{
+                        "type":"string"
+                      },
+                      "updated_at":{
+                        "type":"string"
+                      }
+                    }
+                  },
+                  "example":[
+                    {
+                      "id": "4030e653-51f4-4f3a-9550-a2033c279bc5",
+                      "admin": false,
+                      "name": "User name sample1",
+                      "email": "User email sample 1",
+                      "created_at": "2022-04-22T16:35:18.764Z",
+                      "updated_at": "2022-04-22T16:35:18.764Z"
+                    },
+                    {
+                      "id": "2c923678-221f-49bc-b01b-fc758461e128",
+                      "admin": true,
+                      "name": "User name sample 2",
+                      "email": "User email sample 2",
+                      "created_at": "2022-04-22T16:35:52.233Z",
+                      "updated_at": "2022-04-22T16:35:52.233Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400":{
+            "description":"Usuário sem permissão ou Usuário não encontrado",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "error":{
+                      "type":"string",
+                      "example":"You need to be an administration to list all users."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Exibe o perfil do usuário",
+        "description": "Apresenta os dados do usuário passado na rota",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "item":{
+                    "properties":{
+                      "admin":{
+                        "type":"boolean"
+                      },
+                      "id":{
+                        "type":"string"
+                      },
+                      "name":{
+                        "type":"string"
+                      },
+                      "email":{
+                        "type":"string"
+                      },
+                      "created_at":{
+                        "type":"string"
+                      },
+                      "updated_at":{
+                        "type":"string"
+                      }
+                    }
+                  },
+                  "example":{
+                    "id": "62e23a2e-5ef3-4772-b2ba-08828efe8c09",
+                    "admin": false,
+                    "name": "User name sample",
+                    "created_at": "2022-04-22T15:51:38.522Z",
+                    "updated_at": "2022-04-22T15:51:38.522Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "error":{
+                      "type":"string",
+                      "example":"User not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Torna um usuário admin",
+        "description": "Concede perrmissão administrativa ao usuário",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "item":{
+                    "properties":{
+                      "admin":{
+                        "type":"boolean"
+                      },
+                      "id":{
+                        "type":"string"
+                      },
+                      "name":{
+                        "type":"string"
+                      },
+                      "email":{
+                        "type":"string"
+                      },
+                      "created_at":{
+                        "type":"string"
+                      },
+                      "updated_at":{
+                        "type":"string"
+                      }
+                    }
+                  },
+                  "example":{
+                    "id": "62e23a2e-5ef3-4772-b2ba-08828efe8c09",
+                    "admin": true,
+                    "name": "User name sample",
+                    "created_at": "2022-04-22T15:51:38.522Z",
+                    "updated_at": "2022-04-22T15:51:38.522Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "error":{
+                      "type":"string",
+                      "example":"User not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
