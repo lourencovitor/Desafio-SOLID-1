@@ -28,7 +28,7 @@
         "custom": {
           "regex": "^I[A-Z]",
           "match": true
-        }
+        },
       }
     ],
     "class-methods-use-this": "off",
@@ -57,7 +57,10 @@
     "import/no-extraneous-dependencies": [
       "error",
       { "devDependencies": ["**/*.spec.ts"] }
-    ]
+    ],
+    "no-param-reassign": [2, { 
+      "props": false
+    }]
   },
   "settings": {
     "import/resolver": {
